@@ -1,7 +1,10 @@
 import React from "react";
 import { Scene } from "./components/3d/Scene";
+import { useMissions } from "./hooks/useMissions";
 
 function App() {
+  const { missions, loading, error } = useMissions();
+
   return (
     <div className="min-h-screen bg-space-950 text-white relative overflow-hidden flex flex-col">
       {/* Background Grid */}
@@ -31,6 +34,42 @@ function App() {
         {/* 3D Visualization Area */}
         <section className="w-full">
           <Scene />
+        </section>
+
+        {/* TEMPORARY DATA VERIFICATION PANEL */}
+        <section className="border border-space-800 bg-space-900/50 rounded-xl p-6 backdrop-blur-sm">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 bg-brand-500 rounded-full" />
+            Mission Registry Uplink
+          </h2>
+
+          {loading && (
+            <p className="text-brand-400 font-mono animate-pulse">
+              Receiving Telemetry...
+            </p>
+          )}
+
+          {error && (
+            <p className="text-red-500 font-mono">!! SIGNAL LOST: {error}</p>
+          )}
+
+          {!loading && !error && (
+            <div className="h-64 overflow-y-auto font-mono text-sm space-y-2 pr-2">
+              {missions.slice(0, 10).map((mission) => (
+                <div
+                  key={mission.id}
+                  className="flex justify-between p-2 hover:bg-space-800 rounded border-b border-space-800/50"
+                >
+                  <span className="text-white font-bold">{mission.name}</span>
+                  <span className="text-slate-400">{mission.date}</span>
+                  <span className="text-brand-400">{mission.vehicle}</span>
+                </div>
+              ))}
+              <div className="text-center text-slate-500 pt-2">
+                ... {missions.length - 10} more records loaded
+              </div>
+            </div>
+          )}
         </section>
       </main>
     </div>
