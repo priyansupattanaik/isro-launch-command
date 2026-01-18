@@ -16,7 +16,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"], // For data displays
+        mono: ["JetBrains Mono", "monospace"],
       },
       backgroundImage: {
         "grid-pattern":
